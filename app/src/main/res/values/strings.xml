@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Tarot Score Card</string>
+    <string name="update_user">Update User Name</string>
+    <string name="action_settings">Menu</string>
+</resources>
