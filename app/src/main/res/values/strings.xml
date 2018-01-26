@@ -2,4 +2,6 @@
     <string name="app_name">Tarot Score Card</string>
     <string name="update_user">Update User Name</string>
     <string name="action_settings">Menu</string>
+    <string name="edit_name">Enter your name</string>
+    <string name="button_send">Send</string>
 </resources>
