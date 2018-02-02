@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "554975022915",
+    "firebase_url": "https://tarotscorecard.firebaseio.com",
+    "project_id": "tarotscorecard",
+    "storage_bucket": "tarotscorecard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554975022915:android:1bdfedf5f47db885",
+        "android_client_info": {
+          "package_name": "com.bneuts.tarotscorecard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554975022915-q5kvjernhc4nj9muru1ra6vhq4fk9f4r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bneuts.tarotscorecard",
+            "certificate_hash": "03c854192712baf84277160d8d340dd7a9522f6e"
+          }
+        },
+        {
+          "client_id": "554975022915-t9ekrrpgae7ghngv0ror47obrf9vdh11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLQ8D5Nf9fc9vJ0Dy46Alo4fJSSJCUE6Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554975022915-t9ekrrpgae7ghngv0ror47obrf9vdh11.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
