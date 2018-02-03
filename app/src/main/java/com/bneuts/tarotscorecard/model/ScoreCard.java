@@ -1,14 +1,15 @@
 package com.bneuts.tarotscorecard.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
- * Created by bneut on 02/02/2018.
+ * Created by Benoît Neuts on 02/02/2018.
+ * ScoreCard POJO
  */
 
 public class ScoreCard {
     private String name;
-    private LocalDate date;
+    private long date;
 
     public String getName() {
         return name;
@@ -18,15 +19,19 @@ public class ScoreCard {
         this.name = name;
     }
 
-    public LocalDate getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
+    public Date getDateAsDate() {
+        return new Date(date);
+    }
+
     public String toString() {
-        return "{ ScoreCard name = " + name + " on day: " + date.toString() + " }";
+        return "{ ScoreCard name = " + name + " on day: " + date + " }";
     }
 }
