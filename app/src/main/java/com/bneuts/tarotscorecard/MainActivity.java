@@ -1,8 +1,8 @@
 package com.bneuts.tarotscorecard;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -24,75 +24,55 @@ import com.bneuts.tarotscorecard.ui.DatePickerFragment;
 import com.bneuts.tarotscorecard.viewmodel.ScoreCardViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 
 /**
  * Created by Benoît Neuts on 01/02/2018.
  * MainActivity launched at application startup
  */
 
-
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-
     private static final String LOG_TAG = "MainActivity";
-    public static Boolean okSaved = false;
-
     public static String pathToDoc;
-
     private TextView cardName;
     private EditText editCardName;
-    //private Button sendCardName;
     private EditText editCardDate;
-    private EditText chooseDate;
-
-    private ExecutorService es = Executors.newFixedThreadPool(1);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         cardName = findViewById(R.id.cardName);
         editCardName = findViewById(R.id.editCardName);
         editCardDate = findViewById(R.id.editCardDate);
-        //sendCardName = findViewById(R.id.sendCardName);
+        editCardDate.setClickable(true);
+        editCardDate.setFocusable(false);
+        editCardDate.setOnClickListener(this::showDatePickerDialog);
 
-        editCardDate.setOnFocusChangeListener((v,c) -> {
-            if (c) {
-                showDatePickerDialog(v);
-            }
-        });
-
-        editCardDate.setText(new SimpleDateFormat("yy/m/d", Locale.getDefault()).format(new Date()));
-
-        pathToDoc = "/cards/nvpzNTd1Neh86fXMw8IS";
+        pathToDoc = "/cards/5aCRdSBzx2OzZpqConVK";
         ScoreCardViewModel scoreCardVM = ViewModelProviders.of(this).get(ScoreCardViewModel.class);
-
         LiveData<ScoreCard> liveData = scoreCardVM.getScoreCardLiveData();
-
         liveData.observe(this, score -> {
             if (score != null) {
-
-                String cardRecord = score.getName();
-                System.out.println("firestore a renvoyé : " + cardRecord);
-                cardName.setText(cardRecord);
-                int currentCursorPosition = editCardName.getSelectionEnd();
-                editCardName.setText(cardRecord);
-                editCardName.setSelection(currentCursorPosition);
-                // TODO : use strings.xml instead of plain text inside code
-                if (editCardName.getSelectionEnd() <1) {
-                    Toast.makeText(getApplicationContext(), "Les données ont été chargées.", Toast.LENGTH_SHORT).show();
+                if (!editCardName.hasFocus() || editCardName.getText().length()==0) {
+                    int currentCursorPosition = editCardName.getSelectionEnd();
+                    cardName.setText(score.getName());
+                    editCardName.setText(score.getName());
+                    editCardDate.setText(dateToString(score.getDate()));
+                    try {
+                        editCardName.setSelection(currentCursorPosition);
+                    } catch (IndexOutOfBoundsException iobex) {
+                        Log.d(LOG_TAG, "Couldn't move cursor to previous position.");
+                    }
+                    Toast.makeText(getApplicationContext(), R.string.toast_data_load, Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!editCardDate.getText().toString().equals(dateToString(score.getDate()))) {
+                        editCardDate.setText(dateToString(score.getDate()));
+                    }
                 }
-                okSaved = false;
             }
         });
 
@@ -105,44 +85,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String modifiedText = s.toString();
-                BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
-                ThreadPoolExecutor sendDBUpdate = new ThreadPoolExecutor(
-                        1,       // Initial pool size
-                        1,       // Max pool size
-                        2000,
-                        TimeUnit.MILLISECONDS,
-                        workQueue);
-                sendDBUpdate.execute(new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            synchronized (this) {
-                                wait(1000);
-                            }
-                        } catch (InterruptedException ex) {
-                            // TODO : use strings.xml instead of plain text inside code
-                            Log.d(LOG_TAG, "Interrupted Exception in thread updating FireStore data");
+                try {
+                    //noinspection ConstantConditions //NullPointEx managed by try/catch
+                    if (!s.toString().equals(liveData.getValue().getName())) {
+                        Boolean saved = scoreCardVM.setCardName(s.toString());
+                        if (saved) {
+                            Toast.makeText(getApplicationContext(), R.string.toast_auto_save_ok, Toast.LENGTH_SHORT).show();
                         }
-                        if (modifiedText.equals(s.toString())) {
-                            scoreCardVM.setCardName(s.toString());
-                            okSaved = true;
-                        }
-                    }});
-                sendDBUpdate.shutdown();
-                if (okSaved) {
-                    Toast.makeText(getApplicationContext(), "Les données ont été enregistrées.",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NullPointerException npex) {
+                    Log.d(LOG_TAG, "NullPointerException receiving null object from LiveData");
                 }
-                // TODO : use strings.xml instead of plain text inside code
-
             }
         });
-
-
-
-
-
-
     }
 
     public void showDatePickerDialog(View v) {
@@ -150,4 +105,42 @@ public class MainActivity extends AppCompatActivity {
         dateFragment.show(getSupportFragmentManager(),"datePicker");
     }
 
+    @SuppressLint("DefaultLocale")
+    public static String todayWeReOn() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        return String.format("%d/%d/%d", day, month, year);
+    }
+
+    public String dateToString(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd",Locale.getDefault());
+        return sdf.format(date);
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

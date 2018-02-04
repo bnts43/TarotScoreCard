@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class ScoreCard {
     private String name;
-    private long date;
+    private Date date;
 
     public String getName() {
         return name;
@@ -19,16 +19,12 @@ public class ScoreCard {
         this.name = name;
     }
 
-    public long getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Date getDateAsDate() {
-        return new Date(date);
     }
 
     public String toString() {
