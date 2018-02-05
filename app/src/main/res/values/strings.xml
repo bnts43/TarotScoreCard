@@ -6,7 +6,8 @@
     <string name="edit_card_name">Enter card name</string>
     <string name="button_send">Send</string>
     <string name="button_save">Save</string>
-    <string name="toast_auto_save_ok">Saving modification…</string>
-    <string name="toast_data_load">Data are  being loaded…</string>
+    <string name="toast_auto_save_ok">Auto-saving modification…</string>
+    <string name="toast_data_load">Data are being loaded…</string>
     <string name="toast_new_data_waiting">Updated data on server… Your modification will replace server data !</string>
+    <string name="date_picker">Select a date</string>
 </resources>

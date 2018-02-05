@@ -1,7 +1,10 @@
 package com.bneuts.tarotscorecard.persistence.dataprovider;
 
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.support.annotation.NonNull;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -12,6 +15,27 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FireDBService {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    FireDBService() {
+    }
+
+    private static FirebaseFirestore getInstance() {
+        return db;
+    }
+
+    @NonNull
+    public static DocumentReference getRef(String docPath) {
+        return getInstance().document(docPath);
+    }
+
+    @NonNull
+    public static CollectionReference getCollectionRef(String collectionPath) {
+        return getInstance().collection(collectionPath);
+    }
+
+    @NonNull
+    public static DocumentReference getCardRef(@NonNull String cardId) {
+        return getInstance().collection("cards").document(cardId);
+    }
 }

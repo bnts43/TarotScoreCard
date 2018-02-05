@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 public class FireDocLiveData extends LiveData<DocumentSnapshot> {
     private static final String LOG_TAG = "FireQueryLiveData";
 
-    private final MyValueEventListener listener = new MyValueEventListener();
+    private final SnapShotEventListener listener = new SnapShotEventListener();
 
     private final DocumentReference doc;
 
@@ -31,11 +31,12 @@ public class FireDocLiveData extends LiveData<DocumentSnapshot> {
         doc.addSnapshotListener(listener);
     }
 
-    private class MyValueEventListener implements EventListener<DocumentSnapshot> {
+
+    private class SnapShotEventListener implements EventListener<DocumentSnapshot> {
         @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    // TODO : gérer quand une exception est lancée
+                    Log.d(LOG_TAG, "An exception has been thrown during FireStore processing.");
                     return;
                 }
                 setValue(snapshot);
