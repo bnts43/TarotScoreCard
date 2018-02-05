@@ -21,7 +21,7 @@ public class PlayersRecyclerViewAdapter extends RecyclerView.Adapter<PlayersRecy
 
     public PlayersRecyclerViewAdapter(LiveData<ScoreCard> myDataset) {
         // TODO : replace with observing object instead of converting in hard list
-        List<String> list =myDataset.getValue().getPlayers();
+        List<String> list = (List<String>) myDataset.getValue().getPlayers();
         int items = list.size();
         for (int i = 0 ; i < items; i++) {
             mDataset[i] = list.get(i);

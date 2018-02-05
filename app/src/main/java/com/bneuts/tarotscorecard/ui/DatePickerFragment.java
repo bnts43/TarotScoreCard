@@ -2,8 +2,6 @@ package com.bneuts.tarotscorecard.ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
 import android.os.Bundle;
@@ -13,12 +11,9 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.DatePicker;
 
-import com.bneuts.tarotscorecard.MainActivity;
-import com.bneuts.tarotscorecard.model.ScoreCard;
 import com.bneuts.tarotscorecard.viewmodel.ScoreCardViewModel;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Benoît Neuts on 03/02/2018.
@@ -47,6 +42,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        // TODO : shouldn't update the data but send back values to containing fragment/activity
         ScoreCardViewModel viewModel = ViewModelProviders.of(this).get(ScoreCardViewModel.class);
         viewModel.setCardDate(year,month,dayOfMonth);
     }

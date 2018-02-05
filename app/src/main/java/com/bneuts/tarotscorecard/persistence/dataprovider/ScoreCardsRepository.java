@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -67,6 +68,7 @@ public class ScoreCardsRepository {
         public ScoreCard apply(DocumentSnapshot snapshot) {
             ScoreCard deserialized = snapshot.toObject(ScoreCard.class);
             deserialized.setDate(snapshot.getDate("date"));
+            deserialized.setPlayers((Map<String,Long>)snapshot.get("players"));
             return deserialized;
         }
     }
