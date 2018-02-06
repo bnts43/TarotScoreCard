@@ -27,8 +27,8 @@ public class ScoreCardViewModel extends ViewModel{
     @NonNull
     public LiveData<ScoreCard> getScoreCardLiveData() { return cardLiveData; }
 
-    public void setCardDate(int year, int month, int dayOfMonth) {
-        scoresRepo.setCardDate(year, month, dayOfMonth, cardLiveData.getValue().getId());
+    public void setCardDate(int year, int month, int dayOfMonth, String scoreId) {
+        scoresRepo.setCardDate(year, month, dayOfMonth, scoreId);
     }
 
     public boolean setCardName(String newValue, String scoreId) {

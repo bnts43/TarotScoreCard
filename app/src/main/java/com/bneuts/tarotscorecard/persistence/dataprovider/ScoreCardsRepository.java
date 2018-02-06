@@ -11,8 +11,7 @@ import com.bneuts.tarotscorecard.viewmodel.FireDocLiveData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.Calendar;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -33,9 +32,11 @@ public class ScoreCardsRepository {
     }
 
     public void setCardDate(int year, int month, int dayOfMonth, String scoreId) {
-        // Constructor deprecated but FireStore waits a Date object :(
-        @SuppressWarnings("deprecation") Date date = new Date(year-1900,month,dayOfMonth);
-        FireDBService.getCardRef(scoreId).update("date",date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH,month);
+        FireDBService.getCardRef(scoreId).update("date",calendar.getTime());
     }
 
     public boolean setCardName(@NonNull String newValue, @NonNull String scoreId) {
@@ -67,8 +68,6 @@ public class ScoreCardsRepository {
         @Override
         public ScoreCard apply(DocumentSnapshot snapshot) {
             ScoreCard deserialized = snapshot.toObject(ScoreCard.class);
-            deserialized.setDate(snapshot.getDate("date"));
-            deserialized.setPlayers((Map<String,Long>)snapshot.get("players"));
             return deserialized;
         }
     }

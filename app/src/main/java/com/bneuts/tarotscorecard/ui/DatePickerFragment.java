@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import com.bneuts.tarotscorecard.viewmodel.ScoreCardViewModel;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Benoît Neuts on 03/02/2018.
@@ -23,30 +24,54 @@ import java.util.Calendar;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private static final String LOG_TAG = "DatePickerFragment";
 
+    private static String SCORE_ID;
+    private static ScoreCardViewModel scoreCardVM;
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) throws ActivityNotFoundException {
-        Calendar c = Calendar.getInstance();
-        // TODO : prendre la valeur contenue dans le viewmodel (renvoie un null pour le moment)
-        // c.setTime(liveData.getValue().getDate());
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        if (getActivity() != null ) {
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+        scoreCardVM = getScoreCardVM();
+        Date date = scoreCardVM.getScoreCardLiveData().getValue().getDate();
+        if (date != null) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            if (getActivity() != null ) {
+                return new DatePickerDialog(getActivity(), this, year, month, day);
+            } else {
+                Log.d(LOG_TAG, "Root Activity not found to load date picker properly");
+                throw new ActivityNotFoundException();
+            }
         } else {
-            Log.d(LOG_TAG, "Root Activity not found to load date picker properly");
-            throw new ActivityNotFoundException();
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            if (getActivity() != null ) {
+                return new DatePickerDialog(getActivity(), this, year, month, day);
+            } else {
+                Log.d(LOG_TAG, "Root Activity not found to load date picker properly");
+                throw new ActivityNotFoundException();
+            }
+
         }
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        // TODO : shouldn't update the data but send back values to containing fragment/activity
-        ScoreCardViewModel viewModel = ViewModelProviders.of(this).get(ScoreCardViewModel.class);
-        viewModel.setCardDate(year,month,dayOfMonth);
+        scoreCardVM = getScoreCardVM();
+        scoreCardVM.setCardDate(year,month,dayOfMonth, SCORE_ID);
     }
 
 
+    private ScoreCardViewModel getScoreCardVM() {
+        SCORE_ID = getArguments().getString("SCORE_ID").toString();
+        scoreCardVM = ViewModelProviders.of(getActivity()).get(ScoreCardViewModel.class);
+        scoreCardVM.init(SCORE_ID);
+        return scoreCardVM;
+    }
 
 }
