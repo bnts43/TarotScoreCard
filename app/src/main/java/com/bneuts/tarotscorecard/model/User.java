@@ -7,4 +7,18 @@ package com.bneuts.tarotscorecard.model;
  */
 
 public class User {
+
+    private String userID;
+        public String getUserID() { return userID; }
+        public void setUserID(String userID) { this.userID = userID; }
+
+    private String name;
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+
+    public User() { }
+
+    public User(String name) {
+        this.name = name;
+    }
 }

@@ -7,7 +7,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bneuts.tarotscorecard.model.ScoreCard;
+import com.bneuts.tarotscorecard.model.User;
 import com.bneuts.tarotscorecard.viewmodel.FireDocLiveData;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -26,7 +29,9 @@ public class ScoreCardsRepository {
     private static final String LOG_TAG = "ScoreCardsRepository";
 
     public LiveData<ScoreCard> getScoreCard(String scoreId) {
+        Log.d(LOG_TAG,"Working on ScoreCard ID n°"+scoreId);
         final DocumentReference doc = FireDBService.getCardRef(scoreId);
+        Log.d(LOG_TAG,"Working on Database Document ID n°"+doc.getId());
         final FireDocLiveData liveData = new FireDocLiveData(doc);
         return Transformations.map(liveData, new Deserializer());
     }
@@ -41,12 +46,14 @@ public class ScoreCardsRepository {
 
     public boolean setCardName(@NonNull String newValue, @NonNull String scoreId) {
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
+        int maxPoolSize = Runtime.getRuntime().availableProcessors()-1;
         ThreadPoolExecutor sendDBUpdate = new ThreadPoolExecutor(
                 1,       // Initial pool size
                 1,       // Max pool size
                 3000,
                 TimeUnit.MILLISECONDS,
                 workQueue);
+        //TODO : return false if a thread is already running
         sendDBUpdate.execute(new Thread() {
             @Override
             public void run() {
@@ -71,4 +78,16 @@ public class ScoreCardsRepository {
             return deserialized;
         }
     }
+
+    public FirestoreRecyclerOptions<User> getPlayersFSRecycler(String scoreId/*,Lifecycleowner*/) {
+        CollectionReference coll = FireDBService.getPlayers(scoreId);
+        FirestoreRecyclerOptions<User> s = new FirestoreRecyclerOptions
+                .Builder<User>()
+                //.setLifecycleOwner() TODO, pass a lifecycle owner so that FireStore
+                // automatically manage the lifecycle of the FirestoreRecyclerAdapter
+                .setQuery(coll, User.class)
+                .build();
+        return s;
+    }
+
 }

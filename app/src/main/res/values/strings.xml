@@ -10,4 +10,7 @@
     <string name="toast_data_load">Data are being loaded…</string>
     <string name="toast_new_data_waiting">Updated data on server… Your modification will replace server data !</string>
     <string name="date_picker">Select a date</string>
+    <string name="scorecards_list_title">Last Tarot ScoreCards you played</string>
+    <string name="add_scorecard">Add ScoreCard</string>
+    <string name="player_name_hint">give player a name or leave empty</string>
 </resources>

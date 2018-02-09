@@ -5,52 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bneuts.tarotscorecard.MainActivity">
-<!-- // TODO : mettre la même taille de police et de textview que dans la recyclerview // -->
+
     <Button
-        android:id="@+id/sendCard"
+        android:id="@+id/addScoreCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:text="@string/button_save"
+        android:text="@string/add_scorecard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editCardName"
+        android:id="@+id/cardListTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/edit_card_name"
+        android:hint="@string/scorecards_list_title"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editCardDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/date_picker"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCardName" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/editPlayers"
+        android:id="@+id/scoreCardsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
@@ -58,13 +43,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/sendCard"
+        app:layout_constraintBottom_toTopOf="@+id/addScoreCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCardDate"
+        app:layout_constraintTop_toBottomOf="@+id/cardListTitle"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@android:layout/simple_list_item_1" />
 

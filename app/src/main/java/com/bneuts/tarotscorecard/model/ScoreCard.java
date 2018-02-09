@@ -1,8 +1,8 @@
 package com.bneuts.tarotscorecard.model;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by Benoît Neuts on 02/02/2018.
@@ -11,10 +11,9 @@ import java.util.Map;
 
 public class ScoreCard {
 
-
-    private String Id;
-        public String getId() { return Id; }
-        public void setId(String scoreId) { this.Id = scoreId; }
+    private String cardId;
+        public String getCardId() { return cardId; }
+        public void setCardId(String cardId) { this.cardId = cardId; }
 
     private String name;
         public String getName() { return name; }
@@ -24,16 +23,22 @@ public class ScoreCard {
         public Date getDate() { return date; }
         public void setDate(Date date) { this.date = date; }
 
-    private Map<String,Long> players = new HashMap<>();
-        public Map<String,Long> getPlayers() { return players; }
-        public void setPlayers(Map<String,Long> players) { this.players = players; }
+    private List<User> players = new ArrayList<>();
+        public List<User> getPlayers() { return players; }
+        public void setPlayers(List<User> players) { this.players = players; }
 
     public ScoreCard() {
 
     }
 
-    public ScoreCard(String name, Date date, Map<String, Long> players) {
-        this.Id = "to_be_changed";
+    public ScoreCard(String name, Date date) {
+        this.cardId = "to_be_changed";
+        this.name = name;
+        this.date = date;
+    }
+
+    public ScoreCard(String name, Date date, List<User> players) {
+        this.cardId = "to_be_changed";
         this.name = name;
         this.date = date;
         this.players = players;
