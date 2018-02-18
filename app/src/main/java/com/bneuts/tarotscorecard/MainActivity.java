@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SCORE_ID = "Ukmqd8AEDVteFqTzSqW2";
+        SCORE_ID = "quzN2v0gpMbtcj5aVCKu";
         Log.d(LOG_TAG,"Working on ScoreCard ID n°"+SCORE_ID);
 
         setContentView(R.layout.activity_main);

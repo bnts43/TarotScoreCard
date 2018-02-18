@@ -79,15 +79,40 @@ public class ScoreCardsRepository {
         }
     }
 
-    public FirestoreRecyclerOptions<User> getPlayersFSRecycler(String scoreId/*,Lifecycleowner*/) {
+    public FirestoreRecyclerOptions<User> getPlayersFSRecycler(String scoreId) {
         CollectionReference coll = FireDBService.getPlayers(scoreId);
         FirestoreRecyclerOptions<User> s = new FirestoreRecyclerOptions
                 .Builder<User>()
-                //.setLifecycleOwner() TODO, pass a lifecycle owner so that FireStore
-                // automatically manage the lifecycle of the FirestoreRecyclerAdapter
+                //.setLifecycleOwner() TODO, pass a lifecycle owner so that Fire
                 .setQuery(coll, User.class)
                 .build();
         return s;
     }
 
+    public Boolean updateUserName(String s, String userID, String score_id) {
+        BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
+        int maxPoolSize = Runtime.getRuntime().availableProcessors()-1;
+        ThreadPoolExecutor sendDBUpdate = new ThreadPoolExecutor(
+                1,       // Initial pool size
+                1,       // Max pool size
+                3000,
+                TimeUnit.MILLISECONDS,
+                workQueue);
+        //TODO : return false if a thread is already running
+        sendDBUpdate.execute(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    synchronized (this) {
+                        wait(1000);
+                    }
+                } catch (InterruptedException ex) {
+                    Log.d(LOG_TAG, "Interrupted Exception in thread while updating FireStore data.");
+                }
+                FireDBService.getOnePlayerInScoreCard(score_id,userID).update("name", s).isComplete();
+            }
+        });
+        sendDBUpdate.shutdown();
+        return true;
+    }
 }

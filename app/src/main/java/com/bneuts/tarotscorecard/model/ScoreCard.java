@@ -1,6 +1,5 @@
 package com.bneuts.tarotscorecard.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +9,10 @@ import java.util.List;
  */
 
 public class ScoreCard {
+
+    private String id;
+        public String getId() { return id; }
+        public void setId(String id) { this.id = id; }
 
     private String cardId;
         public String getCardId() { return cardId; }
@@ -23,9 +26,9 @@ public class ScoreCard {
         public Date getDate() { return date; }
         public void setDate(Date date) { this.date = date; }
 
-    private List<User> players = new ArrayList<>();
-        public List<User> getPlayers() { return players; }
-        public void setPlayers(List<User> players) { this.players = players; }
+    private List<String> players;
+        public List<String> getPlayers() { return players; }
+        public void setPlayers(List<String>    players) { this.players = players; }
 
     public ScoreCard() {
 
@@ -35,13 +38,6 @@ public class ScoreCard {
         this.cardId = "to_be_changed";
         this.name = name;
         this.date = date;
-    }
-
-    public ScoreCard(String name, Date date, List<User> players) {
-        this.cardId = "to_be_changed";
-        this.name = name;
-        this.date = date;
-        this.players = players;
     }
 
     public String toString() {

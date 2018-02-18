@@ -48,4 +48,7 @@ public class ScoreCardViewModel extends ViewModel{
         return scoresRepo.getPlayersFSRecycler(SCORE_ID);
     }
 
+    public boolean updateUser(String s, String userID) {
+        return scoresRepo.updateUserName(s,userID,SCORE_ID);
+    }
 }

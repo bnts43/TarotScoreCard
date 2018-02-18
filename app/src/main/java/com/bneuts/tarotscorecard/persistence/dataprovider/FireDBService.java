@@ -30,12 +30,7 @@ public class FireDBService {
     private static FirebaseFirestore getInstance() {
         return db;
     }
-/*
-    @NonNull
-    public static DocumentReference getRef(String docPath) {
-        return getInstance().document(docPath);
-    }
-*/
+
     public static CollectionReference getCollectionRef(@NonNull String collectionPath) {
         return getInstance().collection(collectionPath);
     }
@@ -77,6 +72,10 @@ public class FireDBService {
 
     public static CollectionReference getPlayers(@NonNull String cardId) {
         return db.collection("cards").document(cardId).collection("players");
+    }
+
+    public static DocumentReference getOnePlayerInScoreCard(@NonNull String cardId, @NonNull String playerId) {
+        return getPlayers(cardId).document(playerId);
     }
 
 }

@@ -20,8 +20,6 @@ import com.bneuts.tarotscorecard.viewmodel.ScoreCardViewModel;
  * Created by bneut on 07/02/2018.
  */
 
-// TODO : add archiving a card so that it doesn't show in list
-
 public class ScoreCardsListFragment extends Fragment {
 
     private static final String LOG_TAG = "ScoreCardsListFragment";
